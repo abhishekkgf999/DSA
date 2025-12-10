@@ -1,0 +1,11 @@
+You've got it! These are the three main types of knapsack problems used in optimization and dynamic programming:
+
+1. **0/1 Knapsack** – You either take an item or leave it; no partial selection is allowed. This is commonly solved using 
+recursion with memoization or dynamic programming.
+
+2. **Fractional Knapsack** – Unlike the 0/1 variant, you can take fractions of an item. This is efficiently solved using a 
+greedy algorithm, where items are chosen based on their value-to-weight ratio.
+
+3. **Unbounded Knapsack** – Items can be taken multiple times (unlimited supply). This is typically solved using dynamic 
+programming approaches like bottom-up DP with a single array.
+

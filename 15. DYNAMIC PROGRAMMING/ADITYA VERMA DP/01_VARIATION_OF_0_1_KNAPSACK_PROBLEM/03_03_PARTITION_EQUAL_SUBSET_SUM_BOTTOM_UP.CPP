@@ -1,0 +1,62 @@
+/*
+#PARTITION EQUAL SUBSET SUM
+
+LINK:- https://leetcode.com/problems/partition-equal-subset-sum/
+
+=> SIMILAR TO SUBSET SUM PROBLEM
+
+**CHANGES**
+
+1. IF THE SUM OF THE TOTAL ARRAY IS ODD, WE CANNOT DIVIDE THE GIVEN ARRAY IN TWO EQUAL SUBSETS (ONLY POSSIBLE FOR EVEN TOTAL SUM)
+
+2. FOR EVEN SUM, IF WE CAN FIND A SUBSET EQUAL TO (TOTAL_SUM/2), THEN IT IS POSSIBLE TO PARTITION THE GIVEN ARRAY IN EQUAL SUBSET
+    => ONE HAVING (TOTAL_SUM/2), THEN OTHER SUBSET AUTOMATICALLY CONTAIN (TOTAL_SUM/2)
+
+3. NOW THE PROBLEM REDUCED TO FIND SUBSET HAVING SUM EQUAL TO (TOTAL_SUM/2), WHICH WE ALREADY DID EARLIER.
+
+
+*/
+
+#include<bits/stdc++.h>
+using namespace std;
+
+// bool solve(vector<int> &nums, int n, int required, vector<vector<bool>> &dp){
+//     if(required == 0)return true;
+
+//     if(n == 0 || required<0) return false;
+
+//     if(dp[n][required] != false) return dp[n][required];
+
+//     return dp[n][required] = solve(nums, n-1, required-nums[n-1], dp) || solve(nums, n-1, required, dp);
+// }
+
+bool canPartition(vector<int> &nums){
+    int n = nums.size();
+    int total_sum = accumulate(nums.begin(), nums.end(), 0);
+    if(total_sum&1) return false;
+    int required = total_sum/2;
+    vector<vector<bool>> dp(n+1, vector<bool>(required+1, false));
+    
+    for(int i = 0; i<=n; i++){
+        dp[i][0] = true;
+    }
+
+    for(int i = 1; i<=n; i++){
+        for(int j = 1; j<=required; j++){
+            if(nums[i-1] <= j){
+                dp[i][j] = dp[i-1][j] || dp[i-1][j-nums[i-1]];
+            }
+            else{
+                dp[i][j] = dp[i-1][j];
+            }
+        }
+    }
+
+    return dp[n][required];
+}
+
+int main(){
+    vector<int> nums = {1,5,11,5};
+    cout<<canPartition(nums);
+    return 0;
+}

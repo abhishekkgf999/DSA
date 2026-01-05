@@ -54,6 +54,18 @@ int main() {
     //CUSTOM COMPARATOR
     //EXAMPLE :- MIN HEAP BASED ON SECOND ELEMENT OF PAIR
     //WE CAN ALSO USE THIS AS A COMPARATOR WHILE DECLARING
+
+    /*
+    Core logic (MOST IMPORTANT)
+
+        👉 priority_queue puts the element for which compare(x, y) is false at the top
+
+            So:
+
+            If compare(a, b) == true → a has lower priority than b
+
+            If compare(a, b) == false → a has higher priority than b
+    */
     auto cmp = [](pair<int, int> a, pair<int, int> b) {
         return a.second > b.second;  // smaller second -> higher priority
         };
@@ -65,6 +77,7 @@ int main() {
     pq3.push({ 1, 30 });
     pq3.push({ 2, 10 });
     pq3.push({ 3, 20 });
+    cout<<endl;
 
 
     while (!pq3.empty()) {

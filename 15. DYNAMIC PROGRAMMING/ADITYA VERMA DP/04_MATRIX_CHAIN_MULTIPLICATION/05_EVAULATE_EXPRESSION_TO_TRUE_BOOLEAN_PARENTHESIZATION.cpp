@@ -193,6 +193,51 @@ public:
     }
 };
 
+// User function Template for C++
+class Solution_Memoization {
+  public:
+    int solve(string &s, int i, int j, bool isTrue, vector<vector<vector<int>>> &dp){
+        if(i>j)return 0;
+        
+        if(i==j){
+            if(isTrue){
+                return s[i] == 'T';
+            }else return s[i] == 'F';
+        }
+        
+        if(dp[i][j][isTrue] != -1)return dp[i][j][isTrue];
+        
+        int ways = 0;
+        
+        for(int ind = i+1; ind<=j-1; ind+=2){
+            
+            int lT = solve(s, i, ind-1, true, dp);
+            int lF = solve(s, i, ind-1, false, dp);
+            int rT = solve(s, ind+1, j, true, dp);
+            int rF = solve(s, ind+1, j, false, dp);
+            
+            if(s[ind] == '&'){
+                if(isTrue) ways += lT*rT;
+                else ways += lT*rF + lF*rT + lF*rF;
+            }else if(s[ind] == '|'){
+                if(isTrue) ways += lT*rT + lT*rF + lF*rT;
+                else ways += lF*rF;
+            }else{
+                if(isTrue) ways += lT*rF + lF*rT;
+                else ways += lF*rF + lT*rT;
+            }
+        }
+        
+        return dp[i][j][isTrue] = ways;;
+    }
+    int countWays(string &s) {
+        // code here
+        int n = s.size();
+        vector<vector<vector<int>>> dp(n, vector<vector<int>>(n, vector<int>(2, -1)));
+        return solve(s, 0, n-1, true, dp);
+    }
+};
+
 
 //TABULATION
 class Solution_TABULATION {
@@ -260,6 +305,49 @@ public:
         }
 
         return dp_true[0][n - 1];
+    }
+};
+
+// User function Template for C++
+class Solution_TABULATION2 {
+  public:
+    int countWays(string &s) {
+        // code here
+        int n = s.size();
+        
+        vector<vector<vector<int>>> dp(n, vector<vector<int>>(n, vector<int>(2, 0)));
+        
+        for(int i = 0; i<n; i++){
+            dp[i][i][0] = (s[i] == 'F');
+            dp[i][i][1] = (s[i] == 'T');
+        }
+        
+        for(int L = 3; L<=n; L+=2){
+            for(int i = 0; i<=n-L; i+=2){
+                int j = i + L - 1;
+                for(int ind = i+1; ind<=j-1; ind+=2){
+                    int lT = dp[i][ind - 1][1];
+                    int lF = dp[i][ind - 1][0];
+                    int rT = dp[ind + 1][j][1];
+                    int rF = dp[ind + 1][j][0];
+
+                    if (s[ind] == '&') {
+                        dp[i][j][1] += lT * rT;
+                        dp[i][j][0] += lT * rF + lF * rT + lF * rF;
+                    }
+                    else if (s[ind] == '|') {
+                        dp[i][j][1] += lT * rT + lT * rF + lF * rT;
+                        dp[i][j][0] += lF * rF;
+                    }
+                    else { // '^'
+                        dp[i][j][1] += lT * rF + lF * rT;
+                        dp[i][j][0] += lT * rT + lF * rF;
+                    }
+                }
+            }
+        }
+        
+        return dp[0][n-1][1];
     }
 };
 

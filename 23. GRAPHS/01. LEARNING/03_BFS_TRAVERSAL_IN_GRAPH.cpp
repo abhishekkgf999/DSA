@@ -15,13 +15,13 @@ vector<int> bfsOfGraph(int V, vector<int> adj[]){
     q.push(0);  //insert firt vertex
     vector<int> bfs; //bfs traversal in this vector
 
-    while(!q.empty()){
+    while(!q.empty()){  //This part is running for Number of vertices
         int node = q.front();   // take the front node
         q.pop();
         bfs.push_back(node);    // push in bfs traversal
 
         //check for neighbour of node, put only when not visited
-        for(auto it : adj[node]){
+        for(auto it : adj[node]){   //This for loop is taking time complexity of degree of node, which will become total at last = 2*E
             if(!vis[it]){   //if not visited
                 vis[it] = 1;    //mark visited
                 q.push(it);     //push into queue

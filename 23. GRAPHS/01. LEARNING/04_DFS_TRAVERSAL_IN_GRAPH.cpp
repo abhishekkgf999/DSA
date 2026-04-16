@@ -32,6 +32,10 @@ class Solution{
 };
 
 int main(){
-    
+    vector<int> adj[8] = {{1,2}, {0,4,5}, {0,3,6}, {2,7}, {1}, {1}, {2,7}, {3,6}};
+    int node = 8;
+    Solution obj;
+    vector<int> dfs = obj.dfsOfGraph(node, adj);
+    for(auto i : dfs) cout<<i<<" ";
     return 0;
 }
